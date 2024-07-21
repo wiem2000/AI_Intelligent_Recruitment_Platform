@@ -1,0 +1,107 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+  <div class="container-fluid">
+    <div class="align-items-center center justify-content-center ">
+    <a class="navbar-brand" href="#">    
+      <img src="{% static 'img/logo.png' %}" alt="Nom de votre site" style="margin-bottom: -60px;">
+    </a>
+     <br>
+     <small class="ms-3 text-muted" >AI Intelligent Recruitment Platform </small>
+</div>
+    
+    <button
+      data-mdb-collapse-init
+      class="navbar-toggler"
+      type="button"
+      data-mdb-target="#navbarText"
+      aria-controls="navbarText"
+      aria-expanded="false"
+      aria-label="Toggle navigation"  
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home'  %}">Acceuil</a>  
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">A propos</a>
+        </li>
+        
+      </ul>
+      <span class="navbar-text">
+        <ul class="navbar-nav ml-auto">
+          
+
+          <!--Website-->
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.yellow-it.fr/" target="_blank" rel="”nofollow”">
+              <button type="button" class="btn btn-outline-secondary"> Company Website</button>
+            </a>
+          </li>
+          
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.linkedin.com/company/yellow-it/?originalSubdomain=fr" target="_blank" rel="”nofollow”">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+
+          <li class="nav-item me-3 me-lg-0 dropdown">
+            <a
+                data-mdb-dropdown-init
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                aria-expanded="false"
+            >
+                <i class="fas fa-user"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <div class="dropdown-item">
+                            <strong>Username:</strong> {{ request.user.username }}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item">
+                            <strong>Email:</strong> {{ request.user.email }}
+                        </div>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a href="{% url 'dashboard'  %}" class="dropdown-item">Profile</a>
+                    </li>
+
+                    
+
+
+                    <li>
+                        <a class="dropdown-item" href="#">Settings</a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'register' %}">Signup</a>
+                    </li>
+                    
+                {% endif %}
+            </ul>
+        </li>
+                  </ul>
+
+      </span>
+    </div>
+  </div>
+</nav>

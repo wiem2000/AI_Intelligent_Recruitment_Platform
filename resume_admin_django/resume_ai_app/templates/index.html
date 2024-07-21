@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+
+<style type="text/css">
+    .divbg {
+        background-image: url("{% static 'img/logo0.png' %}");
+        background-color: rgb(239, 239, 239);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center center;
+        min-height: 519px;
+        text-shadow: 1px 1px #000;
+
+    }
+</style>
+
+<div id="jobs-banner-img" class="banner d-flex flex-column justify-content-center align-items-center text-center divbg">
+    <!--<h1 class="mt-5">Rejoignez-nous dans notre quête de talents exceptionnels</h1>
+    <a href="#openings">
+        <button type="button" class="btn btn-lg btn-outline-dark btn-warning ">
+            Postes Ouverts
+        </button></a>-->
+</div>
+
+<hr>
+
+<div class="mt-5 text-center">
+    <h1 id="scroll">Nos Offres</h1>
+    <h4 class="positions">
+
+        {{jobs|length}} Postes vacants
+
+    </h4>
+
+
+</div>
+
+<div class="container">
+    <form class="search-form">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input placeholder="saisir un mot clé" type="search"
+                        class="search-field search-keyword form-control">
+                    <button type="submit" class="btn btn-secondary btn-apply">chercher</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="container mt-5">
+    <div class="card ">
+
+        <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+
+                <tr>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Lieu</th>
+                    <th>Date d'ajout</th>
+                    <th>Action</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+
+                    <td>
+                        <p class="fw-normal mb-1">{{ job.title }}</p>
+
+                    </td>
+
+                    <td>
+                        <span class="badge badge-success rounded-pill d-inline">{{ job.get_job_type_display }}</span>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1"> {{ job.location }}</p>
+
+                    </td>
+
+                    <td>
+                        <p class="text-muted mb-0""> Ajoutée il ya {{ job.created_at|timesince }}</p>
+                    </td>
+
+
+                    <td>
+                        <a type=" button" class="btn btn-primary" href="{% url 'apply_for_job' job.id %}"> Postuler </a>
+
+                        
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+
+
+
+                    <div class="alert alert-danger mt-1">
+
+                        <p><strong>
+
+
+                                <i class="fa-solid fa-circle-exclamation"></i> Aucune offre disponible pour le
+                                moment.</strong></p>
+
+                    </div>
+
+
+                </tr>
+
+
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

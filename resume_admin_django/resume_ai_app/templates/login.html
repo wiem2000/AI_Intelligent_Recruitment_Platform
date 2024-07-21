@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<style type="text/css">
+.divbg {
+    position: relative;
+    background-color: rgb(239, 239, 239);
+    min-height: 519px;
+    text-shadow: 1px 1px #000;
+}
+
+.divbg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("{% static 'img/logo0.png' %}");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    opacity: 0.5; /* Ajustez l'opacité selon vos besoins */
+    z-index: 0;
+}
+
+.divbg > * {
+    position: relative;
+    z-index: 1;
+}
+
+</style>
+
+<div id="jobs-banner-img" class="banner d-flex flex-column justify-content-center align-items-center text-center divbg">
+    <!--<h1 class="mt-5">Rejoignez-nous dans notre quête de talents exceptionnels</h1>-->
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="card w-50">
+            <div class="card-body">
+                <h1 class="card-title">Login</h1>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        {{ form.username.label_tag }}
+                        {{ form.username}}
+                        
+                    </div>
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        
+                    </div>
+                    <!-- 2 column grid layout for inline styling -->
+                    <div class="row mb-4">
+                        
+                        <div class="col">
+                            <!-- Simple link -->
+                            <a href="#!">Forgot password?</a>
+                        </div>
+                    </div>
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-warning btn-block">Sign in</button>
+                </form>
+                <p class="mt-3">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+ 
+
+
+    {% endblock %}
