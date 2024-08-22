@@ -1,0 +1,88 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+
+<div class="container">
+    <h2 class="mt-5">Recommander des Candidats</h2>
+    <hr>
+
+    <div class="card">
+    <div class="card-body">
+    <form method="POST" action="{% url 'recommend_candidates' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="criteria" class="form-label">Critère de recherche (compétences):</label>
+            <input type="text" class="form-control" id="criteria" name="criteria" placeholder="Saisir des compétences..." required>
+        </div>
+     
+        <button  data-mdb-ripple-init data-mdb-modal-init onclick="showSpinnerModal('Analyse des CV en cours. <br> Veuillez  patienter...')" type="submit" class="btn btn-primary">Recommander</button>
+    </form>
+</div>
+    </div>
+
+
+
+
+     </div>
+
+    {% if candidates %}
+        <h4 class="mt-5">Résultats de la Recommandation pour "{{ criteria }}"</h4>
+
+        <div class="list-group list-group-light mt-3">
+            <div  class="list-group-item px-3 border-0 rounded-3 list-group-item-dark mb-2"  >
+                <div class="row">
+                 <div class="col-md-1">ID </div>
+                 <div class="col">Nom et prénom </div>
+                 <div class="col"> Email </div>
+                 <div class="col"> Matching </div>
+                </div>
+
+             
+             </div>
+
+            {% for candidate in candidates %}
+            
+            <div  class="card list-group-item list-group-item-action px-3 border-0 rounded-3 mb-2 list-group-item-primary candidate-row" data-id="{{ candidate.id }}" >
+               <div class="row">
+                <div class="col-md-1">{{ candidate.id }} </div>
+                <div class="col">{{ candidate.name }} </div>
+                <div class="col"> {{ candidate.email }} </div>
+                <div class="col"> <span class="badge rounded-pill badge-dark"> {% widthratio candidate.Similarity 1 100 %} %</span>  </div>
+               </div>
+               
+               
+            
+            </div>
+    
+             {% endfor %}
+    
+    </div>
+
+    
+        
+        <div id="applications-container"></div>
+    {% elif candidates is not None %}
+        <div class="alert alert-warning mt-3" role="alert">
+            Aucun candidat correspondant à vos critères n'a été trouvé.
+        </div>
+    {% endif %}
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    $('.candidate-row').on('click', function() {
+        var candidateId = $(this).data('id');
+        $.ajax({
+            url: "{% url 'candidate_applications' 0 %}".replace('0', candidateId),
+            type: 'GET',
+            success: function(data) {
+                $('#applications-container').html(data);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+

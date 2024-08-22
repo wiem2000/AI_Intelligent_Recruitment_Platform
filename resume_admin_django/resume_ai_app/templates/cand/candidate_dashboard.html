@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>candidate Dashboard</title>
+</head>
+
+
+<div class="container">
+
+
+    <div class="card mt-5">
+        <div class="container">
+        
+          <div class="row">
+            <div class="col-md-6">
+                <h3 class="card-title mt-3">Bienvenue, {{ profile.user.username }}</h3>
+            </div>
+              
+            <div class="col-md-6 text-md-end">
+                
+              <a href="{% url 'upload_resume' %}" class="btn btn-primary mt-3"><i class="fa-solid fa-file-pdf fa-lg"></i> Importer votre CV</a>
+            </div>
+        </div>
+
+            <hr>
+            <div class="row g-0">
+                <div class="col">
+                  {% if  not profile.resume_path  %}
+                  <div class="justify-content-center align-items-center text-center">
+                   <br> <img src="{% static 'img/not_found.png' %}" style="width: 500px; height: auto;">
+                    <br><small>CV non trouvé</small>
+                    <br><small><strong>Pour bénéficier d'une analyse intelligente de votre CV et de recommandations personnalisées, veuillez importer votre CV.</strong></small>
+                    <br><small>Assurez-vous que votre CV est à jour pour vous aider à vous démarquer.</small>
+                  </div>
+                {% else  %}
+                <embed
+                src="{% url 'serve_pdf' profile.resume_path %}"
+                width="500" height="375" type="application/pdf">
+                {% endif  %}
+                </div>
+
+
+                <div class="col">
+                    <div class="card-body">
+
+                     
+
+                        <p class="card-text"><b>Nom et Prénom:</b> <span class="badge badge-info rounded-pill d-inline">{{ profile.name }}</span></p>
+                        <p class="card-text"><b>Email:</b><span class="badge badge-info rounded-pill d-inline">{{ profile.email }}</span></p>
+                        <p class="card-text"><b>N° de téléphone:</b> <span class="badge badge-info rounded-pill d-inline">{{ profile.phone }}</span></p>
+                        <p class="card-text"><b>Education:</b> 
+                          
+                         {% for edu in education %}
+                          <span class="badge badge-info rounded-pill d-inline">{{ edu }}</span>
+                          {% endfor %}
+                        </p>
+                        
+                        
+                        <p class="card-text"><b>Skills:</b>  
+                          
+                          {% for skill in skills %}
+                        
+                            <span class="badge badge-info rounded-pill d-inline">{{ skill }}</span>
+                        
+                        {% endfor %}
+                       </p> 
+
+                        <p class="card-text"><b>Domaine:</b> <span class="badge badge-info rounded-pill d-inline"> {{ profile.category }}</span></p>
+
+                        <p class="card-text">
+                            <small class="text-muted">Dernières Modification: {{profile.updated_at}}</small>
+                        </p>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card-footer">
+          <div class="alert alert-warning mt-3" role="alert">
+            <small class="text-muted">
+            Les informations affichées ci-dessus sont extraites à partir de l'intelligence artificielle et peuvent contenir des erreurs.<br>
+             Veuillez vérifier et corriger si nécessaire. <a href="{% url 'edit_candidate_profile' %}"> Modifier </a> 
+          </small>
+          </div>
+  
+        </div>
+
+       
+    </div>
+
+    <div class="card mt-5">
+        <div class="container">
+            <h3 class="card-title mt-3">Vos candidatures </h3>
+            <hr>
+            <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Titre du Poste</th>
+                    <th>Date de Candidature</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                  <tr>
+                    <td>
+                        <p class="fw-normal mb-1">{{ application.job.title }}</p>
+                        <p class="text-muted mb-0">{{ application.job.recruiter.company_name }}</p>
+                      </td>
+    
+                    <td>
+                      <p class="fw-normal mb-1">{{ application.applied_at }}</p>    
+                    </td>
+                    <td>
+                      <span class="badge badge-success rounded-pill d-inline">{{ application.get_status_display }}</span>
+                    </td>
+                    <td>
+                      <a type="button" class="btn btn-link btn-sm btn-rounded" href="{% url 'edit_application' application.id %}" title="Modifier" >
+                        <i class="fa-solid fa-pen-to-square fa-xl"></i>
+                      </a>
+                      <a type="button" class="btn btn-link btn-sm btn-rounded" href="{% url 'delete_application' application.id %}" title="Supprimer" onclick="return confirmDeletion(event)" >
+                        <i class="fa-solid fa-trash fa-xl"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+               
+                </tbody>
+              </table>
+
+        </div>
+
+
+
+
+
+
+      
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript">
+  function confirmDeletion(event) {
+      // Prévenir le comportement par défaut du lien
+      event.preventDefault();
+     
+      console.log('URL de suppression:', event.currentTarget.href);
+      // Afficher la boîte de confirmation
+      var isConfirmed = confirm('Êtes-vous sûr de vouloir supprimer cette candidature ?');
+
+      // Si l'utilisateur confirme, rediriger vers l'URL du lien
+      if (isConfirmed) {
+          window.location.href = event.currentTarget.href;
+      }
+
+      // Retourner false pour empêcher le redirectionnement automatique du lien
+      return false;
+  }
+</script>
+
+
+{% endblock %}

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'resume_ai_app',
-    'sweetify'
+    'sweetify',
+  
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,11 @@ LOGOUT_REDIRECT_URL = 'login'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS= True
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_HOST_USER= 'wiembenmlouka@gmail.com'
+EMAIL_HOST_PASSWORD='uarc ujga mpau avfm'
+EMAIL_PORT=587

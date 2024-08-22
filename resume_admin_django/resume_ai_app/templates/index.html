@@ -39,20 +39,37 @@
 </div>
 
 <div class="container">
-    <form class="search-form">
+    <!--
+    <form class="search-form" action="{% url 'home' %}">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="input-group">
                     <input placeholder="saisir un mot clé" type="search"
-                        class="search-field search-keyword form-control">
-                    <button type="submit" class="btn btn-secondary btn-apply">chercher</button>
+                        class="search-field search-keyword form-control" name="search">
+                    <button type="submit" class="btn btn-secondary btn-apply" >chercher</button>
                 </div>
             </div>
         </div>
     </form>
+
+-->
+<form class="search-form">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="input-group">
+
+   
+    <input id="user-input" class="form-control search-field search-keyword" type="text" placeholder="Chercher" aria-label="Search">
+    <button class="btn btn-secondary btn-apply" > <i id="search-icon" class="fas fa-search" aria-hidden="true"></i></button>
+</div>
+</div>
 </div>
 
+</form>
 
+</div>
+
+<!--
 <div class="container mt-5">
     <div class="card ">
 
@@ -124,24 +141,17 @@
         </table>
 
     </div>
-
-
-
-
-
-
+   
 
 </div>
+-->
 
 
 
 
-
-
-
-
-
-
+<div id="replaceable-content">
+    {% include 'jobs_list.html' %}
+</div>
 
 
 

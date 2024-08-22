@@ -1,0 +1,282 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+
+
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-md">
+            <div class="card text-bg-secondary mb-3">
+
+                <div class="card-body text-center">
+                    <p class="card-title">Poste Totale </p>
+                    <h3 class="card-text" style="color: aliceblue;">{{ total_jobs }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card text-bg-secondary mb-3">
+
+                <div class="card-body text-center">
+                    <p class="card-title">Offres Postées par vous </p>
+                    <h3 class="card-text" style="color: aliceblue;">{{ total_jobs_recruiter}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card text-bg-secondary mb-3">
+
+                <div class="card-body text-center">
+                    <p class="card-title">Candidatures En Cours </p>
+                    <h3 class="card-text" style="color: aliceblue;">{{interview_scheduled }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row " style="font-size: small;">
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center card-text ">
+                    <p> <b>{{total_candidates}}</b> Totale Candidats</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center card-text ">
+                    <p> <b>{{active_jobs}}</b> Postes Ouverts</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center card-text ">
+                    <p> <b>{{new_candidates_7days}}</b> Nouveau Candidats (7 jours)</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center ">
+                    <p> <b>{{new_applicants}}</b> Nouvelles Candidatures (7jours)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md">
+            <div class="card text-bg-light " style="height: 350px;">
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="dailyApplicationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-5">
+            <div class="card text-bg-light " style="height: 350px;">
+                <div class="card-body">
+                    <h5> Candidats par catégorie</h5>
+                    <canvas style="margin-top: -30px;" id="categoryPieChart"></canvas>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="col-md">
+
+            <div class="card text-bg-light mb-3"  style="height: 400px;">
+                <div class="card-header">Offres récentes</div>
+                <div class="card-body">
+
+                    <div class="list-group list-group-light">
+                        {% for job in latest_jobs %}
+                     
+                        <a href="#" class="list-group-item " >{{ job.title }}  <p class="text-muted"> Posté le {{ job.created_at|date:"d/m/Y" }}</p></a>
+                    
+                        {% endfor %}
+                    </div>
+
+
+                
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md">
+            <div class="card text-bg-light mb-3"  style="height: 400px;">
+                <div class="card-header">Candidatures récentes</div>
+                <div class="card-body">
+
+                    <div class="list-group list-group-light">
+                        {% for application in latest_applications %}
+                        <a  href="#" class="list-group-item " >{{ application.candidate.name }} 
+                            <p class="text-muted"> 
+                                 soumise le {{application.created_at|date:"d/m/Y"}}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md">
+
+            <div class="card text-bg-light " style="height: 400px;">
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="recruitmentBarChart" height="350px"> </canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script>
+    const ctx = document.getElementById('categoryPieChart').getContext('2d');
+    const categoryPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: JSON.parse('{{ category_labels|escapejs }}'),  // Les étiquettes des catégories
+            datasets: [{
+                label: 'Nombre de candidats par catégorie',
+                data: JSON.parse('{{ category_counts|escapejs }}'),  // Les données des catégories
+                backgroundColor: [
+                    '#FFA500',
+                    '#87CEEB',
+                    '#FFFF00',
+                    '#FFFACD',
+                    '#00CED1'
+                ],
+                borderColor: [
+                    '#FFA500',
+                    '#87CEEB',
+                    '#FFFF00',
+                    '#FFFACD',
+                    '#00CED1'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+
+                },
+
+            }
+        }
+    });
+
+
+    const dailyLabels = {{ daily_labels| safe }};
+    const dailyValues = {{ daily_values| safe }};
+
+    const ctx2 = document.getElementById('dailyApplicationsChart').getContext('2d');
+    const dailyApplicationsChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: dailyLabels,
+            datasets: [{
+                label: 'Candidatures par jour',
+                data: dailyValues,
+                fill: false,
+                borderColor: '#FFA500',
+                tension: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+
+
+
+  
+        var ctx3 = document.getElementById('recruitmentBarChart').getContext('2d');
+        var recruitmentBarChart = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['En cours', 'Refusé', 'Accepté'],
+                datasets: [{
+                    label: 'Candidatures',
+                    data: [{{ in_progress }}, {{ refused }}, {{ accepted }}],
+                    backgroundColor: [
+                        '#FFD700',  
+                        '#B22222',  
+                        '#87CEFA'   
+                    ],
+                    borderColor: [
+                         '#FFD700',  
+                        '#B22222',  
+                        '#87CEFA'   
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+   
+
+</script>
+
+
+
+
+{% endblock %}

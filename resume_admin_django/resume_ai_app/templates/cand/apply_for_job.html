@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+
+
+    <div class="card">
+        <div class="card-header">Postuler pour le poste : <b>{{ job.title }}</b></div>
+        <div class="card-body">
+          
+          <p class="card-text"><strong>Type :</strong>  <span class="badge badge-info rounded-pill d-inline">{{ job.get_job_type_display }}</span> </p>
+          <p class="card-text"><strong>Lieu :</strong> <span class="badge badge-info rounded-pill d-inline">{{ job.location }}</span> </p>
+          <p class="card-text"><strong>Description :</strong>  {{ job.description }}</p>
+          <p class="card-text"><strong>Profile recherché: </strong> {{ job.requirements }}</p>
+          
+          <form method="post">
+            {% csrf_token %}
+            <div class="mt-5 mb-5">
+                <label for="cover_letter" class="form-label">Lettre de motivation </label>
+                {{ form.cover_letter }}
+            </div>
+            <button type="submit" class="btn btn-primary">Confirmer votre candidature</button>
+            <a href="{% url 'candidate_dashboard' %}" class="btn btn-secondary">Annuler</a>
+        </form>
+        
+        </div>
+
+      </div>
+
+</div>
+{% endblock %}
+
+
+

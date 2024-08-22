@@ -1,0 +1,53 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+
+
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            <h4 class="card-title mt-3">Ajouter un poste</h4>
+
+        </div>
+        <div class="card-body">
+
+            
+
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                       <strong> {{ field.label_tag }}</strong>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="alert alert-danger mt-2">
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <div class="card-footer mt-4">
+                    <div class="form-group d-flex justify-content-end">
+                        <a href="{% url 'list_jobs' %}" class="btn btn-secondary">Annuler</a>
+
+                        <button type="submit" class="btn btn-primary">Publier</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

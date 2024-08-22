@@ -1,0 +1,91 @@
+
+
+
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+
+<div class="container mt-5 ">
+    <h1>Gérer les recruteurs</h1>
+    <hr>
+    <div class="row mt-4">
+        <div class="col-md-8 ">
+           
+            <h4>Liste des recruteurs</h4>
+            
+
+            
+            <table class="table" style="font-size: small;">
+                <thead>
+                    <tr>
+                        <th>Nom d'utilisateur</th>
+                        <th>Email</th>
+                        <th>Nom et Prenom</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recruiter in recruiters %}
+                    <tr>
+                        <td>{{ recruiter.user.username }}</td>
+                        <td>{{ recruiter.user.email }}</td>
+                        <td>{{ recruiter.user.first_name}} {{ recruiter.user.last_name}}</td>
+                        <td>
+                            {% if recruiter.isActive == True %}
+                            <div class="d-flex">
+                                <a href="{% url 'edit_recruiter' recruiter.id %}" class="btn btn-sm btn-info me-2">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-warning" onclick="confirmAction('Êtes-vous sûr de vouloir désactiver cet utilisateur ?', '{% url 'delete_recruiter' recruiter.id %}')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+
+                            {% else %}
+
+                            <small style="font-size: x-small;" class="text-muted">cet utilisateur a été desactivé . Si vous voulez le restaurer cliquer sur  </small>
+                                <a style="font-size: x-small;" href="#"  onclick="confirmAction('Êtes-vous sûr de vouloir réactiver cet utilisateur ?', '{% url 'activate_recruiter' recruiter.id %}')">
+                                   Restaurer
+                                </a>
+                           
+
+
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+       
+        </div>
+        <div class="col-md-4" style="font-size: small;">
+            <h4>{% if edit %}Modifier{% else %}Ajouter{% endif %} un recruteur</h4>
+     
+            <form method="post">
+                {% csrf_token %}
+            
+           
+
+                {{ user_form.as_p }}
+                
+                {{ recruiter_form.as_p }}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary mr-2">{% if edit %}Enregistrer{% else %}Ajouter{% endif %}</button>
+                    {% if edit %}
+                    <a href="{% url 'manage_recruiters' %}" class="btn btn-secondary">Annuler</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+

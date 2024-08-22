@@ -1,0 +1,74 @@
+<div class="container mt-5">
+    <div class="card ">
+
+        <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+
+                <tr>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Lieu</th>
+                    <th>Date d'ajout</th>
+                    <th>Action</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+
+                    <td>
+                        <p class="fw-normal mb-1">{{ job.title }}</p>
+
+                    </td>
+
+                    <td>
+                        <span class="badge badge-success rounded-pill d-inline">{{ job.get_job_type_display }}</span>
+                    </td>
+
+                    <td>
+                        <p class="fw-normal mb-1"> {{ job.location }}</p>
+
+                    </td>
+
+                    <td>
+                        <p class="text-muted mb-0"> Ajoutée il ya {{ job.created_at|timesince }} </p>
+                    </td>
+
+
+                    <td>
+                        <a type=" button" class="btn btn-primary" href="{% url 'apply_for_job' job.id %}"> Postuler </a>
+
+                        
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+
+
+
+                    <div class="alert alert-danger mt-1">
+
+                        <p><strong>
+
+
+                                <i class="fa-solid fa-circle-exclamation"></i> Aucune offre disponible pour le
+                                moment.</strong></p>
+
+                    </div>
+
+
+                </tr>
+
+
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+   
+
+</div>

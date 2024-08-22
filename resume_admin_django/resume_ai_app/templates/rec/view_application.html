@@ -1,0 +1,133 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-body">
+        <h3 class="card-title mt-3">Candidature N°  {{ application.id }} </h3>
+            <hr>
+            <p><b>Candidat:</b> {{ application.candidate.user.username }}</p>
+            <p><b>Poste:</b> {{ application.job.title }}</p>
+            <p><b>Date de candidature:</b> {{ application.applied_at }}</p>
+            <p><b>Recruteur:</b> {{ application.job.recruiter.user.first_name }} {{ application.job.recruiter.user.last_name }}</p>    
+            <p><b>Statut:</b> {{ application.get_status_display }}</p>
+            <p><b>Commentaire du recruteur:</b> {{ application.recruiter_comment }}</p>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="container">
+    
+    
+          <div class="row">
+            <div class="col-md-6">
+                <h3 class="card-title mt-3">Détails de la candidature</h3>
+            </div>
+          
+        </div>
+    
+            <hr>
+            <div class="container ">
+               
+               
+               
+                <div class="row justify-content-center ">
+                  {% if  not  application.candidate.resume_path  %}
+                  <div class="justify-content-center align-items-center text-center">
+                   <br> <img src="{% static 'img/not_found.png' %}" style="width: 500px; height: auto;">
+                    <br><small>CV non trouvé</small>
+                   
+                </div>
+                {% else  %}
+                <embed class="center"
+                src="{% url 'serve_pdf' application.candidate.resume_path %}"
+                width="800" height="600" type="application/pdf">
+                {% endif  %}
+                </div>
+
+    
+    
+              
+          
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="card-body">
+
+
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th><b>Nom et Prénom</b></th>
+                            <td><span class="badge badge-dark rounded-pill d-inline">{{ application.candidate.name }}</span></td>
+                          </tr>
+                          <tr>
+                            <th><b>Email</b></th>
+                            <td><span class="badge badge-dark rounded-pill d-inline">{{ application.candidate.email }}</span></td>
+                          </tr>
+                          <tr>
+                            <th><b>N° de téléphone</b></th>
+                            <td><span class="badge badge-dark rounded-pill d-inline">{{ application.candidate.phone }}</span></td>
+                          </tr>
+                          <tr>
+                            <th><b>Éducation</b></th>
+                            <td><span class="badge badge-dark rounded-pill d-inline">{{ application.candidate.education }}</span></td>
+                          </tr>
+                          <tr>
+                            <th><b>Skills</b></th>
+                            <td><span class="badge badge-dark rounded-pill d-inline">{{ application.candidate.skills }}</span></td>
+                          </tr>
+                          <tr>
+                            <th><b>Domaine</b></th>
+                            <td><p class="badge badge-danger d-inline lead">{{ application.candidate.category }}</p></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      
+                      
+
+                    <p class="card-text"><b>Lettre de motivation :</b> </p>
+
+                    <div class="note note-light mb-3">
+                        {{ application.cover_letter}}
+                      </div>
+
+                 
+                </div>
+              
+            </div>
+        </div>
+    
+    
+    
+        <div class="card-footer">
+          <div class="alert alert-warning mt-3" role="alert">
+            <small class="text-muted">
+            Les informations affichées ci-dessus sont extraites à partir de l'intelligence artificielle et peuvent contenir des erreurs.<br>
+            
+          </small>
+          </div>
+    
+        </div>
+    
+       
+    </div>
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}

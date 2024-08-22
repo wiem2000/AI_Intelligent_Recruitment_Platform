@@ -1,0 +1,103 @@
+
+
+
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+    
+    <!--
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+</head>
+    <h1>Welcome, {{ profile.username }}</h1>
+    
+    <a href="{% url 'logout' %}">Logout</a>
+
+-->
+
+<div class="mt-5">
+    <h1>Admin Dashboard</h1>
+    <hr>
+    <h2>Jobs</h2>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Recruiter</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.title }}</td>
+                <td>{{ job.recruiter.user.username }}</td>
+                <td>{{ job.status }}</td>
+                <td>
+                    <a href="{% url 'edit_job' job.id %}" class="btn btn-link">Edit</a>
+                    <a href="{% url 'delete_job' job.id %}" class="btn btn-link" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<!--
+    <h2>Applications</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Candidate</th>
+                <th>Job</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.candidate.user.username }}</td>
+                <td>{{ application.job.title }}</td>
+                <td>{{ application.status }}</td>
+                <td>
+                    <a href="" class="btn btn-link">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Candidates</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Education</th>
+                <th>Skills</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for candidate in candidates %}
+            <tr>
+                <td>{{ candidate.user.username }}</td>
+                <td>{{ candidate.user.email }}</td>
+                <td>{{ candidate.phone }}</td>
+                <td>{{ candidate.education }}</td>
+                <td>{{ candidate.skills }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    -->
+</div>
+    
+
+{% endblock %}
+
+
+
