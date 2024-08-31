@@ -5,7 +5,7 @@
         
     <hr>
     
-    <div  style="height: 300px;  overflow-y: scroll">
+    <div style="height: 300px;  overflow-y: scroll">
     <table class="table align-middle mb-0 bg-white mt-3">
         <thead class="bg-light">
             <tr>
@@ -21,7 +21,7 @@
             {% for application in applications %}
             <tr>
                 <td>{{ application.id}}</td>
-                <td>{{ application.candidate.name }}</td>
+                <td><a class="text-info" href="{% url 'view_profile' application.candidate.user.id %}">{{ application.candidate.name }}</a></td>
                 <td>{{ application.job.title }}</td>
                 <td>{{ application.applied_at }}</td>
                 <td>

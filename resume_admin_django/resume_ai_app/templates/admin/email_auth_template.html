@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<body style="font-family: Arial, sans-serif; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #f39c12;">Bienvenue, {{ user.first_name }} !</h1>
+        <p>Votre compte recruteur chez <strong>AI Intelligent Recruitment Platform</strong> a été créé avec succès. Nous sommes ravis de vous accueillir dans notre communauté de recruteurs.</p>
+
+        <p><strong>Voici vos informations d'authentification :</strong></p>
+        <ul>
+            <li><strong>Nom d'utilisateur :</strong> {{ user.username }}</li>
+            <li><strong>Email :</strong> {{ user.email }}</li>
+            <li><strong>Mot de passe temporaire :</strong> {{ password }}</li>
+        </ul>
+
+        <p><em>Veuillez noter que ce mot de passe est temporaire.</em> Il est fortement recommandé de le modifier dès que possible dans les paramètres de votre profil pour garantir la sécurité de votre compte.</p>
+
+        <p>Pour commencer à publier des offres d'emploi et trouver des talents correspondant à vos besoins, veuillez cliquer sur le bouton ci-dessous pour vous connecter :</p>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="{{ login_url }}" style="background-color: #f39c12; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px;">Se connecter</a>
+        </div>
+
+        <p>Si vous avez des questions ou besoin d'aide, n'hésitez pas à nous contacter. Nous sommes là pour vous assister tout au long de votre processus de recrutement.</p>
+
+        <p>Nous vous souhaitons une excellente expérience sur notre plateforme et sommes impatients de vous aider à trouver les meilleurs candidats pour vos offres d'emploi.</p>
+
+        <p>Cordialement,</p>
+        <p><em>L'équipe AI Intelligent Recruitment Platform</em></p>
+
+        <hr style="border: none; border-top: 1px solid #ddd;">
+        <p style="font-size: 12px; color: #888;">
+            Cet e-mail vous a été envoyé suite à la création de votre compte en tant que recruteur sur notre plateforme. Si vous n'avez pas créé ce compte, veuillez ignorer cet e-mail.
+        </p>
+    </div>
+</body>
+</html>

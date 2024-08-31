@@ -1,57 +1,68 @@
-{% extends 'base.html' %}
+{% extends 'base_login.html' %}
 
-{% block content %}
+{% block content_auth %}
 
 
 {% load static %}
 {% load form_filters %}
 
-<div class="container">
 
 
     <div class="container">
         <div class="row d-flex justify-content-center align-items-center min-vh-100">
-            <div class="card" style="width: 50rem;">
-                <div class="card-header"><h4>Modifier le profile</h4></div>
-                <div class="mt-3 mb-3 text-center">
+            <div class="card" style=" background-color: rgba(255, 255, 255, 0.97); border: none;width: 50rem;">
 
-               
-                <img src="{% static 'img/profile1.png' %}" width="200px"  alt="Fissure in Sandstone"/>
-                
-             
-                 </div>
-                <div class="card-body">
+
+                <div class="mt-3 mb-3 ">
+
+                    <div class="card-body">
+                        
+                        <h4 style="color:#3b4a6b; font-weight: bold;">Mise a jour des informations personnelles</h4>
+            
+                        <hr>
+
+                        <div class="text-center">
+
+                        
+
+                        <img src="{% static 'img/profile1.png' %}" width="200px" alt="Fissure in Sandstone" />
+
+                       </div>
+                   
+
                     <form method="POST" class="form-group">
                         {% csrf_token %}
                         <!-- Form rendering -->
                         {% for field in form %}
-                            <div class="mb-3">
-                               
-                              <div class="mb-2"> <b> {{ field.label_tag }}</b></div>
-                             
-                              {{ field|add_class:"form-control" }}
-                              
-                                {% if field.errors %}
-                                    <div class="text-danger small ">{{ field.errors }}</div>
-                                {% endif %}
-                            </div>
+                        <div class="mb-3">
+
+                            <div class="mb-2"> <b> {{ field.label_tag }}</b></div>
+
+                            {{ field|add_class:"form-control" }}
+
+                            {% if field.errors %}
+                            <div class="text-danger small ">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
                         {% endfor %}
 
                         <div class="card-footer text-end ">
 
                             <button type="submit" class="btn btn-info mt-2">Mettre à jour</button>
-        
+
                         </div>
-                       
+
                     </form>
                 </div>
-              
+
             </div>
         </div>
     </div>
-    
-  
-</div>
 
-  
-  {% endblock %}
+    </div>
+
+
+
+
+
+{% endblock %}

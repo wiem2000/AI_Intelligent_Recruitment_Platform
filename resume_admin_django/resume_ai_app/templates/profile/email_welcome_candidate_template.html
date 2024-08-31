@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<body style="font-family: Arial, sans-serif; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #f39c12;">Bienvenue, {{ user.username }} !</h1>
+        <p>Merci de vous être inscrit sur <strong>AI Intelligent Recruitment Platform</strong>.</p>
+        
+        <p>Nous sommes ravis de vous accueillir dans notre communauté de candidats. Grâce à notre plateforme, vous aurez accès à des opportunités d'emploi correspondant à vos compétences et à votre parcours.</p>
+        
+        <p><strong>Informations de connexion :</strong></p>
+        <ul>
+            <li>Votre nom d’utilisateur : <strong>{{ user.username }}</strong></li>
+            <li>Votre adresse e-mail : <strong>{{ user.email }}</strong></li>
+        </ul>
+
+        <p>Pour commencer à utiliser notre plateforme, veuillez cliquer sur le bouton ci-dessous pour vous connecter :</p>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="{{ login_url }}" style="background-color: #f39c12; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px;">Se connecter</a>
+        </div>
+
+        <p>Si vous avez des questions, n'hésitez pas à nous contacter à tout moment.</p>
+        
+        <p>Encore une fois, bienvenue dans notre communauté ! Nous sommes impatients de vous aider à trouver votre prochaine opportunité.</p>
+
+        <p>Meilleures salutations,</p>
+        <p>L'équipe AI Intelligent Recruitment Platform</p>
+        
+        <hr style="border: none; border-top: 1px solid #ddd;">
+        <p style="font-size: 12px; color: #888;">
+            Cet e-mail vous a été envoyé parce que vous vous êtes inscrit sur notre plateforme. Si vous n'avez pas créé de compte, veuillez ignorer cet e-mail.
+        </p>
+    </div>
+</body>
+</html>

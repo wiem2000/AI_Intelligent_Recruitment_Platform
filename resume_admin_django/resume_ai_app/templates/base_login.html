@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+{% load form_filters %}
+
+
+
+<style type="text/css">
+  .btn-box button {
+  display: inline-block;
+  padding: 10px 45px;
+  background-color: #f0d43a;
+  color: #ffffff;
+  border-radius: 5px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border: 1px solid #f0d43a;
+}
+
+.btn-box button:hover {
+  color: #ffffff;
+  -webkit-transform: translateY(-3px);
+          transform: translateY(-3px);
+}
+</style>
+
+<div class="hero_area">
+  <div class="hero_social">
+    <a href="">
+      <i class="fa fa-facebook" aria-hidden="true"></i>
+    </a>
+    <a href="">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+    <a href="">
+      <i class="fa fa-linkedin" aria-hidden="true"></i>
+    </a>
+    <a href="">
+      <i class="fa fa-instagram" aria-hidden="true"></i>
+    </a>
+  </div>
+
+<section class="slider_section ">
+  <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="container-fluid ">
+          <div class="row">
+            {% block content_auth %}
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+   
+    </div>
+  
+  </div>
+
+</section>
+</div>
+
+
+
+{% endblock %}

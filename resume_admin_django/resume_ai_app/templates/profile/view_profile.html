@@ -1,0 +1,77 @@
+{% extends 'base_login.html' %}
+
+{% block content_auth %}
+
+
+{% load static %}
+
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card" style=" background-color: rgba(255, 255, 255, 0.97); border: none;width: 50rem;">
+
+            <div class="mt-3 mb-3 ">
+                <div class="card-body">
+                    <h4 style="color:#3b4a6b; font-weight: bold;">Profile de {{ user.username }}</h4>
+                    <hr>
+                    <div class="text-center">
+                        <img src="{% static 'img/profile1.png' %}" width="200px" alt="Profile Image" />
+                    </div>
+                    <div class="mt-4">
+                        <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+                        <p><strong>Prénom:</strong> {{ user.first_name }}</p>
+                        <p><strong>Nom:</strong> {{ user.last_name }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+
+                        <hr>
+                        <div class="mt-2">
+
+                            {% if profile == user.candidate_profile %}
+                            <h5 class="text-warning">Informations du Candidat :</h5>
+                            <hr>
+                            <p><strong>Nom:</strong> {{ profile.name }}</p>
+                            <p><strong>Téléphone:</strong> {{ profile.phone }}</p>
+                            <p><strong>Éducation:</strong> {{ profile.education }}</p>
+                            <p><strong>Compétences:</strong> {{ profile.skills }}</p>
+                            <p><strong>Catégorie:</strong> {{ profile.category }}</p>
+
+                            <div class="mt-2">
+                                <hr>
+                                <h5 class="text-warning">Historique des Candidatures :</h5>
+                                <hr>
+
+                                {% include 'rec/candidate_applications.html' with applications=applications %}
+
+                            </div>
+                            <!-- Vérifiez si le profil est un profil de recruteur -->
+                            {% elif profile == user.recruiter_profile %}
+                            <h5 class="text-warning">Informations du Recruteur :</h5>
+                            <hr>
+                            <p><strong>Nom de l'entreprise:</strong> {{ profile.company_name }}</p>
+                            <p><strong>Description de l'entreprise:</strong> {{ profile.company_description }}</p>
+                            <div class="mt-2">
+                                <hr>
+                                <h5 class="text-warning">Historique </h5>
+                                <hr>
+
+                                {% include 'rec/list_job_partiel.html' with jobs=jobs %}
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <!-- Afficher le bouton de mise à jour si c'est l'utilisateur connecté -->
+                    {% if user == request.user %}
+                    <div class="text-end mt-4">
+                        <a href="{% url 'update_profile' %}" class="btn btn-info">Mettre à jour le profil</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

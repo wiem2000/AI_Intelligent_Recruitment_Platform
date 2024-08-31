@@ -26,6 +26,19 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+
+
+<link href="{% static 'css/style.css' %}" rel="stylesheet" />
+<link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+
+
+
+
 </head>
 
 <body>
@@ -43,11 +56,9 @@
   
 </div>
 
- <div style="height: 100px;">
-    
-
- </div>
-
+<div class="mt-5">
+{% include '_footer.html' %}
+</div>
 
 
 
@@ -131,7 +142,7 @@ function hideSpinnerModal() {
 
 
 
-    </script>
+</script>
 
     
  <script type="text/javascript" src="{% static 'js/mdb.umd.min.js'%}"></script>
@@ -139,6 +150,18 @@ function hideSpinnerModal() {
  <script type="text/javascript"></script>
 
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+ 
+ 
+ <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+ 
+ 
+   <!-- bootstrap js -->
+   <script src="{% static 'js/bootstrap.js' %}"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+
+ 
 
 
 

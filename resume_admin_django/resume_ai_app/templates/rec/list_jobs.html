@@ -2,77 +2,62 @@
 
 {% block content_in_sidebar %}
 {% load static %}
+
 <head>
     <meta charset="UTF-8">
     <title>Recruiter Dashboard</title>
 </head>
 
-<!--
-<body>
-    <h1>Welcome, {{ profile.user.username }}</h1>
-    <p>Company Name: {{ profile.company_name }}</p>
-    <p>Company Description: {{ profile.company_description }}</p>
-    <a href="{% url 'logout' %}">Logout</a>
-</body>
--->
 
 <div class="container">
-    <div class="card mt-5">
-        <div class="container">
-            <h3 class="card-title mt-3">Bienvenue, {{ profile.user.username }}</h3>
-            <br>
-            
-        </div>
-       
-    </div>
-            <div class="card mt-5">
-            <div class="container">
-            <h4 class="card-title mt-3">Emplois postés</h4>
-            <hr>
-            
-            <a href="{% url 'post_job' %}" class="btn btn-primary mt-3"><i class="fa-solid fa-plus"></i> Ajouter un nouvel emploi</a>
-            <div  style="height: 300px;  overflow-y: scroll">
-            <table class="table align-middle mb-5 bg-white mt-3 table-hover">
-                <thead class="bg-light">
-                    <tr>
-                        <th>Titre</th>
-                        <th>Type</th>
-                        <th>Date de publication</th>
-                        <th>Publié par </th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for job in jobs %}
-                    <tr >
-                        <td class="job-row" data-id="{{ job.id }}">{{ job.title }}</td>
-                        <td>{{ job.get_job_type_display }}</td>
-                       
-                        <td>{{ job.posted_at }}</td>
-                        <td>{{ job.recruiter.user.username }}</td>
-                        <td>
-                            <a  data-id="{{ job.id }}" data-mdb-ripple-init data-mdb-modal-init onclick="showSpinnerModal('Analyse des CV en cours. <br> Veuillez  patienter...')"  class="btn btn-link btn-sm btn-rounded job-row"></i>Liste Candidats </a>
-                            {% if request.user.recruiter_profile == job.recruiter %}
-                            <a href="{% url 'edit_job' job.id %}" class="btn btn-link btn-sm btn-rounded"><i class="fa-solid fa-pen-to-square fa-xl"></i> </a>
-                            <a href="#" class="btn btn-link btn-sm btn-rounded" onclick="confirmAction('Êtes-vous sûr de vouloir supprimer ce job ?', '{% url 'delete_job' job.id %}')"><i class="fa-solid fa-trash fa-xl"></i> </a>
-                            {% else %}
-                            <span class="small text-muted">Vous n'avez pas les autorisations de modification/suppression.</span>
-                            {% endif %}
-                        </td>
-                    </tr>
+
+<div class="card">
+   
+    <div class="card-body">
+        <div class="card-title"><h6>Appliquer Filtres</h6></div>
+        <hr>
+
+        <form method="GET" class="row align-items-center">
+            <div class="col">
+                <label class="form-label" for="recruiter">Filtrer par recruteur :</label>
+                <select name="recruiter" id="recruiter" class="form-control">
+                    <option value="">Tous</option>
+                    {% for recruiter in recruiters %}
+                    <option value="{{ recruiter.id }}" {% if selected_recruiter == recruiter.id|stringformat:"s" %} selected {% endif %}>
+                        {{ recruiter.user.username }}
+                    </option>
                     {% endfor %}
-                </tbody>
-            </table>
+                </select>
             </div>
-
+        
+            <div class="col">
+                
+                <label class="form-label" for="statut">Filtrer par statut :</label>
+                <select name="is_open" id="is_open" class="form-control">
+                    <option value="">Tous</option>
+                    <option value="open" {% if is_open_filter == 'open' %} selected {% endif %}>Ouvert</option>
+                    <option value="closed" {% if is_open_filter == 'closed' %} selected {% endif %}>Fermé</option>
+                </select>
             </div>
+        
+            <div class="col">
+                <br>
+                <button  type="submit" class="btn btn-dark"> Appliquer </button>
             </div>
+        </form>
+
+        
+    </div>
+
+</div>
+
+{% include 'rec/list_job_partiel.html' with jobs=jobs %}
 
 
 
 
 
-<div id="applications-container"></div>
+    <div id="applications-container"></div>
 
 
 </div>
@@ -81,18 +66,18 @@
 
 
 <script>
-$(document).ready(function() {
-    $('.job-row').on('click', function() {
-        var jobId = $(this).data('id');
-        $.ajax({
-            url: "{% url 'job_candidates' 0 %}".replace('0', jobId),
-            type: 'GET',
-            success: function(data) {
-                $('#applications-container').html(data);
-            }
+    $(document).ready(function () {
+        $('.job-row').on('click', function () {
+            var jobId = $(this).data('id');
+            $.ajax({
+                url: "{% url 'job_candidates' 0 %}".replace('0', jobId),
+                type: 'GET',
+                success: function (data) {
+                    $('#applications-container').html(data);
+                }
+            });
         });
     });
-});
 </script>
 
 

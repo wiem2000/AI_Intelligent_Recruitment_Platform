@@ -170,3 +170,5 @@ EMAIL_HOST= 'smtp.gmail.com'
 EMAIL_HOST_USER= 'wiembenmlouka@gmail.com'
 EMAIL_HOST_PASSWORD='uarc ujga mpau avfm'
 EMAIL_PORT=587
+
+BASE_FLASK_API="http://1b0f-34-141-133-89.ngrok-free.app"

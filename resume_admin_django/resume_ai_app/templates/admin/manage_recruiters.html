@@ -1,21 +1,23 @@
 
-
-
 {% extends 'admin/base_admin.html' %}
 
 {% block content_in_sidebar %}
 {% load static %}
+{% load form_filters %}
 
 <div class="container mt-5 ">
-    <h1>Gérer les recruteurs</h1>
+    
     <hr>
+
+
     <div class="row mt-4">
-        <div class="col-md-8 ">
+       
            
             <h4>Liste des recruteurs</h4>
+            <hr>
             
 
-            
+            <div style="max-height: 400px; overflow-y: scroll;">
             <table class="table" style="font-size: small;">
                 <thead>
                     <tr>
@@ -28,7 +30,7 @@
                 <tbody>
                     {% for recruiter in recruiters %}
                     <tr>
-                        <td>{{ recruiter.user.username }}</td>
+                        <td><a class="text-info" href="{% url 'view_profile' recruiter.user.id %}">{{ recruiter.user.username }}</a></td>
                         <td>{{ recruiter.user.email }}</td>
                         <td>{{ recruiter.user.first_name}} {{ recruiter.user.last_name}}</td>
                         <td>
@@ -40,6 +42,7 @@
                                 <a href="#" class="btn btn-sm btn-warning" onclick="confirmAction('Êtes-vous sûr de vouloir désactiver cet utilisateur ?', '{% url 'delete_recruiter' recruiter.id %}')">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
+
                             </div>
 
                             {% else %}
@@ -56,31 +59,98 @@
                         </td>
                     </tr>
                     {% endfor %}
+
                 </tbody>
             </table>
-       
-        </div>
-        <div class="col-md-4" style="font-size: small;">
-            <h4>{% if edit %}Modifier{% else %}Ajouter{% endif %} un recruteur</h4>
-     
-            <form method="post">
-                {% csrf_token %}
-            
-           
+            </div>
+      
+    </div>
 
-                {{ user_form.as_p }}
-                
+
+    <div class="row mt-4">
+   
+        <div class="card" style="font-size: small;">
+            <div class="card-body">
+              <h5 class="card-title">{% if edit %} <i class="fa-regular fa-pen-to-square"></i> Modifier{% else %} <i class="fa-solid fa-plus"></i> Ajouter{% endif %} un recruteur</h5>
+              
+              <hr>
+
+              <form method="post">
+
+                {% csrf_token %}
+
+               
+
+                {% for field in user_form %}
+                <div class="mb-4">
+     
+                    <div data-mdb-input-init class="form-outline ">
+                        {{ field | add_class:"form-control" }}
+                        <label class="form-label" for="form1Example1"> {{ field.label_tag }}</label>
+                      </div>
+
+                      {% if field.help_text %}
+                      <div class="form-text  text-warning">{{ field.help_text }}</div>
+                      {% endif %}
+          
+
+
+                      {% if field.errors %}
+                      {% for error in field.errors %}
+                          <div class="text-danger small">{{ error }}</div>
+                      {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                {% endfor %}
+
+
                 {{ recruiter_form.as_p }}
+
+                
+              
+                <div class="card-footer">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary mr-2">{% if edit %}Enregistrer{% else %}Ajouter{% endif %}</button>
                     {% if edit %}
                     <a href="{% url 'manage_recruiters' %}" class="btn btn-secondary">Annuler</a>
                     {% endif %}
                 </div>
+            </div>
             </form>
-        </div>
+
+             
+            </div>
+          </div>
+
     </div>
 </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get('user_id');
+
+            if (userId) {
+                Swal.fire({
+                    title: 'Utilisateur ajouté avec succès',
+                    text: 'Voulez-vous envoyer un email d\'authentification à l\'utilisateur ?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Oui',
+                    cancelButtonText: 'Non',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Construire l'URL correctement en utilisant le user_id
+                        window.location.href = `/send-email/${userId}/`;
+                    }
+                });
+            }
+        });
+    </script>
+
 
 
 

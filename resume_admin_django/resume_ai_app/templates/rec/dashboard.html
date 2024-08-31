@@ -117,7 +117,7 @@
                     <div class="list-group list-group-light">
                         {% for job in latest_jobs %}
                      
-                        <a href="#" class="list-group-item " >{{ job.title }}  <p class="text-muted"> Posté le {{ job.created_at|date:"d/m/Y" }}</p></a>
+                        <a href="#" class="list-group-item " >{{ job.title|truncatechars:20 }}  <p class="text-muted"> Posté le {{ job.created_at|date:"d/m/Y" }}</p></a>
                     
                         {% endfor %}
                     </div>
@@ -137,7 +137,7 @@
 
                     <div class="list-group list-group-light">
                         {% for application in latest_applications %}
-                        <a  href="#" class="list-group-item " >{{ application.candidate.name }} 
+                        <a  href="{% url 'view_application' application.id %}" class="list-group-item " >{{ application.candidate.name }} 
                             <p class="text-muted"> 
                                  soumise le {{application.created_at|date:"d/m/Y"}}</p>
                         </a>
@@ -180,18 +180,24 @@
                 label: 'Nombre de candidats par catégorie',
                 data: JSON.parse('{{ category_counts|escapejs }}'),  // Les données des catégories
                 backgroundColor: [
-                    '#FFA500',
+                '#FFA500',
                     '#87CEEB',
-                    '#FFFF00',
-                    '#FFFACD',
-                    '#00CED1'
+                    '#f9c556',
+                    '#2a88b8',
+                    '#00CED1',
+                    '#050129',  
+                    '#B22222',
+                    '#209e81'
                 ],
                 borderColor: [
-                    '#FFA500',
+                '#FFA500',
                     '#87CEEB',
-                    '#FFFF00',
-                    '#FFFACD',
-                    '#00CED1'
+                    '#f9c556',
+                    '#2a88b8',
+                    '#00CED1',
+                    '#050129',  
+                    '#B22222',
+                    '#209e81'
                 ],
                 borderWidth: 1
             }]
@@ -221,7 +227,7 @@
                 label: 'Candidatures par jour',
                 data: dailyValues,
                 fill: false,
-                borderColor: '#FFA500',
+                borderColor: '#050129',
                 tension: 0
             }]
         },
@@ -252,14 +258,14 @@
                     label: 'Candidatures',
                     data: [{{ in_progress }}, {{ refused }}, {{ accepted }}],
                     backgroundColor: [
-                        '#FFD700',  
+                    '#050129',  
                         '#B22222',  
-                        '#87CEFA'   
+                        '#59d5f7'    
                     ],
                     borderColor: [
-                         '#FFD700',  
+                    '#050129',  
                         '#B22222',  
-                        '#87CEFA'   
+                        '#59d5f7'     
                     ],
                     borderWidth: 1
                 }]

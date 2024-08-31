@@ -1,0 +1,84 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block content_in_sidebar %}
+{% load static %}
+
+
+<div class="container mt-5">
+    <div class="card">
+
+        
+        <div class="card-body">
+
+            <div class="card-title"><h6>Détail de l'offre</h6></div>
+            <hr>
+
+            <div class="note note-secoundary mb-3">
+                <table class="table" >
+                    
+                    <tbody>
+                      <tr>
+                        <th scope="col" width="30%" >Titre</th>
+                        <td> {{ job.title }}</td>
+                      
+                      </tr>
+                      <tr>
+                        <th scope="col">Type</th>
+                        <td> {{ job.get_job_type_display }}</td>
+                  
+                      </tr>
+                      <tr>
+                        <th scope="col"  >Recruteur</th>
+                        <td> {{ job.recruiter.user.username }}</td>
+                      
+                      </tr>
+                      <tr>
+                        <th scope="row">Lieu</th>
+                        <td colspan="2">{{ job.location }}</td>
+                    
+                      </tr>
+                      <tr>
+                        <th scope="row">Description</th>
+                        <td colspan="2">{{ job.description }}</td>
+                      
+                      </tr>
+                      <tr>
+                        <th scope="row">Exigence du profile</th>
+                        <td colspan="2">{{ job.requirements }}</td>
+                     
+                      </tr>
+                      <tr>
+                        <th scope="row">Date de publication</th>
+                        <td colspan="2">{{ job.posted_at }}</td>
+                    
+                      </tr>
+                      <tr>
+                        <th scope="row">Statut</th>
+                        <td colspan="2">{% if job.is_open %}<span class="badge badge-success">Activé</span>{% else %}<span class="badge badge-danger">Désactivé</span>{% endif %}</td>
+                    
+                      </tr>
+                      <tr>
+                        <th scope="row"> Candidats </th>
+                        <td colspan="2"><a data-mdb-ripple-init data-mdb-modal-init class="btn btn-link btn-sm btn-rounded job-row" href="{% url 'job_candidates' job.id %}" onclick="showSpinnerModal('Analyse du CV en cours. <br> Veuillez  patienter...')"  >Liste Candidats</a></td>
+                    
+                      </tr>
+                    </tbody>
+                  </table>
+             
+            
+            </div>
+
+
+  
+           
+
+            {% block content_candidates %}
+         
+            {% endblock %}
+
+
+         
+        </div>
+    </div>
+</div>
+{% endblock %}

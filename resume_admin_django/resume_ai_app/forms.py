@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from resume_ai_app.models import Application, CandidateProfile, Job, RecruiterProfile
 
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.contrib.auth.hashers import identify_hasher
 
 class CustomAuthenticationForm(AuthenticationForm):
+    
     def clean(self):
         try:
             return super().clean()
@@ -20,36 +21,25 @@ class CustomAuthenticationForm(AuthenticationForm):
             )
         
 
-                               
-
 class UserCreationForm(forms.ModelForm):
     
-    role = forms.ChoiceField(choices=(('candidate', 'Candidate'), ('recruiter', 'Recruiter')))
+    email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput, label='Confirm password')
 
     class Meta:
         model = User
-        fields = ['username', 'password','confirm_password', 'role']
-        error_messages = {
-            'username': {
-                'required': 'Ce champ est requis.',
-               
-            },
-            'password': {
-                'required': 'Ce champ est requis.',
-            },
-              'confirm_password': {
-                'required': 'Ce champ est requis.',
-                'invalid': 'Les mots de passe ne correspondent pas.',
-            },
-        }
+        fields = ['username', 'email', 'password','confirm_password']
         help_texts = {
-            'username': '',  # Remove help text
-           
+            'username': '',  # Remove help text          
         }
         
-
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Cette adresse email est déjà utilisée.")
+        return email   
+     
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
@@ -59,46 +49,27 @@ class UserCreationForm(forms.ModelForm):
             self.add_error('confirm_password', "Les mots de passe ne correspondent pas.")
 
         return cleaned_data
-
-
-
+    
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
         return user
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'form-control'})
-        self.fields['password'].widget.attrs.update({'class':'form-control'})
-        self.fields['role'].widget.attrs.update({'class':'form-control'})
-        self.fields['confirm_password'].widget.attrs.update({'class':'form-control'})
 
 
 class UserForm(forms.ModelForm):
 
-
-
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control','required': True}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+     
         help_texts = {
             'username': '',  # Supprimer le texte d'aide
             'email': '',  # Supprimer le texte d'aide
             'first_name': '',  # Supprimer le texte d'aide
             'last_name': ''  # Supprimer le texte d'aide
-        }
-
-      
-        
+        }     
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
@@ -107,14 +78,14 @@ class UserForm(forms.ModelForm):
             hashed_password = self.instance.password
             self.fields['password'] = forms.CharField(
                 label='Mot de passe',
-                widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}),
+                widget=forms.TextInput(attrs={'readonly': 'readonly'}),
                 initial=self.mask_password(hashed_password),
                 required=False,  # Indiquer que ce champ n'est pas requis pour la validation
-                help_text=f"<small style='color: red;font-size:small'><b>Algorithme:</b> {self.get_password_hash_algorithm(hashed_password)}. Les mots de passe ne sont pas enregistrés en clair, ce qui ne permet pas d’afficher le mot de passe de cet utilisateur, mais il est possible de le changer en utilisant ce formulaire</small>"
+                help_text=f"Algorithme: {self.get_password_hash_algorithm(hashed_password)}. Les mots de passe ne sont pas enregistrés en clair, ce qui ne permet pas d’afficher le mot de passe de cet utilisateur."
             )
 
     def mask_password(self, password):
-        return password[:3] + '*' * (len(password) - 3)
+        return password[21:25] + '*' * (len(password) - 3)
     
 
     def get_password_hash_algorithm(self, password):
@@ -130,7 +101,8 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-            
+
+   
 class RecruiterForm(forms.ModelForm):
     class Meta:
         model = RecruiterProfile
@@ -177,18 +149,21 @@ class ResumeUploadForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'description', 'requirements', 'job_type', 'location']
+        fields = ['title', 'description', 'requirements', 'job_type', 'location', 'is_open']  # Ajout de is_open
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'requirements': forms.Textarea(attrs={'class': 'form-control'}),
             'job_type': forms.Select(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'is_open': forms.CheckboxInput(attrs={'class': 'form-check-input'}),  # Widget pour le checkbox
         }
+
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
+            if field != 'is_open':  # Ne pas appliquer la classe form-control à is_open (Checkbox)
+                self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
 
 class ApplicationStatusForm(forms.ModelForm):
     class Meta:

@@ -1,103 +1,292 @@
 
 
-
 {% extends 'admin/base_admin.html' %}
 
 {% block content_in_sidebar %}
 {% load static %}
-    
-    <!--
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-</head>
-    <h1>Welcome, {{ profile.username }}</h1>
-    
-    <a href="{% url 'logout' %}">Logout</a>
 
--->
 
-<div class="mt-5">
-    <h1>Admin Dashboard</h1>
-    <hr>
-    <h2>Jobs</h2>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Recruiter</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for job in jobs %}
-            <tr>
-                <td>{{ job.title }}</td>
-                <td>{{ job.recruiter.user.username }}</td>
-                <td>{{ job.status }}</td>
-                <td>
-                    <a href="{% url 'edit_job' job.id %}" class="btn btn-link">Edit</a>
-                    <a href="{% url 'delete_job' job.id %}" class="btn btn-link" onclick="return confirm('Are you sure?')">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-<!--
-    <h2>Applications</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Candidate</th>
-                <th>Job</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.candidate.user.username }}</td>
-                <td>{{ application.job.title }}</td>
-                <td>{{ application.status }}</td>
-                <td>
-                    <a href="" class="btn btn-link">View</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <h2>Candidates</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Education</th>
-                <th>Skills</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for candidate in candidates %}
-            <tr>
-                <td>{{ candidate.user.username }}</td>
-                <td>{{ candidate.user.email }}</td>
-                <td>{{ candidate.phone }}</td>
-                <td>{{ candidate.education }}</td>
-                <td>{{ candidate.skills }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    -->
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-md">
+            <div class="card text-bg-secondary mb-3">
+
+                <div class="card-body text-center">
+                    <p class="card-title">Total Poste </p>
+                    <h3 class="card-text" style="color: aliceblue;">{{ total_jobs }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card text-bg-secondary mb-3">
+
+                <div class="card-body text-center">
+                    <p class="card-title">Total Recruteurs</p>
+                    <h3 class="card-text" style="color: aliceblue;">{{ total_recruiters}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card text-bg-secondary mb-3">
+
+                <div class="card-body text-center">
+                    <p class="card-title">Candidatures En Cours </p>
+                    <h3 class="card-text" style="color: aliceblue;">{{interview_scheduled }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row " style="font-size: small;">
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center card-text ">
+                    <p> <b>{{total_candidates}}</b> Totale Candidats</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center card-text ">
+                    <p> <b>{{active_jobs}}</b> Postes Ouverts</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center card-text ">
+                    <p> <b>{{new_candidates_7days}}</b> Nouveau Candidats (7 jours)</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md">
+            <div class="card border border-secondary shadow-0 mb-3">
+                <div class=" text-secondary text-center ">
+                    <p> <b>{{new_applicants}}</b> Nouvelles Candidatures (7jours)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md">
+            <div class="card text-bg-light " style="height: 350px;">
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="dailyApplicationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-5">
+            <div class="card text-bg-light " style="height: 350px;">
+                <div class="card-body">
+                    <h5> Candidats par catégorie</h5>
+                    <canvas style="margin-top: -30px;" id="categoryPieChart"></canvas>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="col-md">
+
+            <div class="card text-bg-light mb-3"  style="height: 400px;">
+                <div class="card-header">Offres récentes</div>
+                <div class="card-body">
+
+                    <div class="list-group list-group-light">
+                        {% for job in latest_jobs %}
+                     
+                        <a href="#" class="list-group-item " >{{ job.title|truncatechars:20  }}  <p class="text-muted"> Posté le {{ job.created_at|date:"d/m/Y" }}</p></a>
+                    
+                        {% endfor %}
+                    </div>
+
+
+                
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md">
+            <div class="card text-bg-light mb-3"  style="height: 400px;">
+                <div class="card-header">Candidatures récentes</div>
+                <div class="card-body">
+
+                    <div class="list-group list-group-light">
+                        {% for application in latest_applications %}
+                        <a  href="{% url 'view_application' application.id %}" class="list-group-item " >{{ application.candidate.name }} 
+                            <p class="text-muted"> 
+                                 soumise le {{application.created_at|date:"d/m/Y"}}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md">
+
+            <div class="card text-bg-light " style="height: 400px;">
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="recruitmentBarChart" height="350px"> </canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
-    
+
+
+
+
+
+
+
+
+<script>
+    const ctx = document.getElementById('categoryPieChart').getContext('2d');
+    const categoryPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: JSON.parse('{{ category_labels|escapejs }}'),  // Les étiquettes des catégories
+            datasets: [{
+                label: 'Nombre de candidats par catégorie',
+                data: JSON.parse('{{ category_counts|escapejs }}'),  // Les données des catégories
+                backgroundColor: [
+                    '#FFA500',
+                    '#87CEEB',
+                    '#f9c556',
+                    '#2a88b8',
+                    '#00CED1',
+                    '#050129',  
+                    '#B22222',
+                    '#209e81'
+
+                ],
+                borderColor: [
+                    '#FFA500',
+                    '#87CEEB',
+                    '#f9c556',
+                    '#2a88b8',
+                    '#00CED1',
+                    '#050129',  
+                    '#B22222',
+                    '#209e81'
+
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+
+                },
+
+            }
+        }
+    });
+
+
+    const dailyLabels = {{ daily_labels| safe }};
+    const dailyValues = {{ daily_values| safe }};
+
+    const ctx2 = document.getElementById('dailyApplicationsChart').getContext('2d');
+    const dailyApplicationsChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: dailyLabels,
+            datasets: [{
+                label: 'Candidatures par jour',
+                data: dailyValues,
+                fill: false,
+                borderColor: '#050129',
+                tension: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+
+
+
+  
+        var ctx3 = document.getElementById('recruitmentBarChart').getContext('2d');
+        var recruitmentBarChart = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['En cours', 'Refusé', 'Accepté'],
+                datasets: [{
+                    label: 'Candidatures',
+                    data: [{{ in_progress }}, {{ refused }}, {{ accepted }}],
+                    backgroundColor: [
+                        '#050129',  
+                        '#B22222',  
+                        '#59d5f7'   
+                    ],
+                    borderColor: [
+                         '#050129',  
+                        '#B22222',  
+                        '#59d5f7'   
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+   
+
+</script>
+
+
+
 
 {% endblock %}
-
-
-

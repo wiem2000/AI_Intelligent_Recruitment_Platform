@@ -97,24 +97,41 @@
 
     <div class="card mt-5">
         <div class="container">
-            <h3 class="card-title mt-3">Vos candidatures </h3>
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title mt-3">Vos candidatures</h3>
+            <a class="text-md-end" href="{% url 'home' %}">Liste des Postes Vacants</a>
+        </div>
+           
             <hr>
             <table class="table align-middle mb-0 bg-white">
                 <thead class="bg-light">
                   <tr>
                     <th>Titre du Poste</th>
+                    <th>Status du Poste</th>
                     <th>Date de Candidature</th>
                     <th>Statut</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
+                  {% if applications %}
                     {% for application in applications %}
                   <tr>
                     <td>
                         <p class="fw-normal mb-1">{{ application.job.title }}</p>
                         <p class="text-muted mb-0">{{ application.job.recruiter.company_name }}</p>
                       </td>
+                      <td>
+                        {% if  application.job.is_open %}
+                        <span class="badge badge-success rounded-pill d-inline">Activé</span>
+                        {% else %}
+                        <span class="badge badge-danger rounded-pill d-inline">Désactivé</span>
+                        {% endif %}
+                      </td>
+
+
+
+                    
     
                     <td>
                       <p class="fw-normal mb-1">{{ application.applied_at }}</p>    
@@ -126,48 +143,32 @@
                       <a type="button" class="btn btn-link btn-sm btn-rounded" href="{% url 'edit_application' application.id %}" title="Modifier" >
                         <i class="fa-solid fa-pen-to-square fa-xl"></i>
                       </a>
-                      <a type="button" class="btn btn-link btn-sm btn-rounded" href="{% url 'delete_application' application.id %}" title="Supprimer" onclick="return confirmDeletion(event)" >
+                      <a type="button" class="btn btn-link btn-sm btn-rounded"  onclick="confirmAction('Êtes-vous sûr de vouloir supprimer ce job ?', '{% url 'delete_application' application.id %}')" title="Supprimer" >
                         <i class="fa-solid fa-trash fa-xl"></i>
                       </a>
                     </td>
                   </tr>
                   {% endfor %}
+                  {% else %}
+            <tr>
+                <td colspan="4" class="text-center">
+                    <p class="fw-normal mb-1 text-muted">Vous n'avez postulé pour aucune offre d'emploi.<a href="{% url 'home' %}"> Postuler</a></p>
+                </td>
+            </tr>
+        {% endif %}
                
                 </tbody>
               </table>
 
+
         </div>
 
-
-
-
-
-
-      
     </div>
-
 
 </div>
 
 
-<script type="text/javascript">
-  function confirmDeletion(event) {
-      // Prévenir le comportement par défaut du lien
-      event.preventDefault();
-     
-      console.log('URL de suppression:', event.currentTarget.href);
-      // Afficher la boîte de confirmation
-      var isConfirmed = confirm('Êtes-vous sûr de vouloir supprimer cette candidature ?');
 
-      // Si l'utilisateur confirme, rediriger vers l'URL du lien
-      if (isConfirmed) {
-          window.location.href = event.currentTarget.href;
-      }
-
-      // Retourner false pour empêcher le redirectionnement automatique du lien
-      return false;
-  }
-</script>
 
 
 {% endblock %}

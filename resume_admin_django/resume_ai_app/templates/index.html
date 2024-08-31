@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 {% load static %}
 
 
@@ -15,143 +16,260 @@
         text-shadow: 1px 1px #000;
 
     }
+    .item {
+        background-color: #ffffff;
+         width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  opacity: 1;
+  border: transparent;
+
+    }
+    .item.active {
+  width: 23px;
+  height: 23px;
+  background-color: #f0d43a;
+  border: transparent;
+}
 </style>
 
-<div id="jobs-banner-img" class="banner d-flex flex-column justify-content-center align-items-center text-center divbg">
-    <!--<h1 class="mt-5">Rejoignez-nous dans notre quête de talents exceptionnels</h1>
-    <a href="#openings">
-        <button type="button" class="btn btn-lg btn-outline-dark btn-warning ">
-            Postes Ouverts
-        </button></a>-->
-</div>
-
-<hr>
-
-<div class="mt-5 text-center">
-    <h1 id="scroll">Nos Offres</h1>
-    <h4 class="positions">
-
-        {{jobs|length}} Postes vacants
-
-    </h4>
-
-
-</div>
-
-<div class="container">
-    <!--
-    <form class="search-form" action="{% url 'home' %}">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="input-group">
-                    <input placeholder="saisir un mot clé" type="search"
-                        class="search-field search-keyword form-control" name="search">
-                    <button type="submit" class="btn btn-secondary btn-apply" >chercher</button>
+<div class="hero_area">
+    <div class="hero_social">
+      <a href="">
+        <i class="fa fa-facebook" aria-hidden="true"></i>
+      </a>
+      <a href="">
+        <i class="fa fa-twitter" aria-hidden="true"></i>
+      </a>
+      <a href="">
+        <i class="fa fa-linkedin" aria-hidden="true"></i>
+      </a>
+      <a href="">
+        <i class="fa fa-instagram" aria-hidden="true"></i>
+      </a>
+    </div>
+ 
+<section class="slider_section ">
+    <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="container-fluid ">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="detail-box">
+                  <h1>
+                    Révolutionnez votre recrutement avec l'intelligence artificielle
+                  </h1>
+                  <p>
+                    Grâce à la technologie avancée de Yellow IT, <i>AI Intelligent Recruitment Platform</i> utilise l'intelligence artificielle pour transformer votre processus de recrutement, en vous permettant de trouver les meilleurs talents rapidement et efficacement.
+                  </p>
+                  <div class="btn-box">
+                    <a href="" class="btn1">
+                      Contact Us
+                    </a>
+                  </div>
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="img-box">
+                  <img src="{% static 'img/recruit1.png' %}" alt="">
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </form>
+        <div class="carousel-item ">
+          <div class="container-fluid ">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="detail-box">
+                  <h1>
+                    Accélérez votre carrière avec AI Intelligent Recruitment Platform
+                  </h1>
+                  <p>
+                    La plateforme analyse vos qualifications et vous connecte rapidement aux recruteurs à la recherche de profils comme le vôtre.
+                  </p>
+                  <div class="btn-box">
+                    <a href="" class="btn1">
+                      Contact Us
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="img-box">
+                  <img src="{% static 'img/recruit2.png' %}" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item ">
+          <div class="container-fluid ">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="detail-box">
+                  <h1>
+                     Une rencontre intelligente entre recruteurs et talents.
+                  </h1>
+                  <p>
+                    Recruteurs et candidats trouvent ce qu’ils cherchent sur une plateforme unique, alimentée par l’intelligence artificielle et conçue pour maximiser les résultats des deux côtés
+                  </p>
+                  <div class="btn-box">
+                    <a href="" class="btn1">
+                      Contact Us
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="img-box">
+                  <img src="{% static 'img/recruit3.png' %}" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-indicators">
+        <button class="item active"  data-target="#customCarousel1" data-slide-to="0" ></button>
 
--->
-<form class="search-form">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="input-group">
+        <button class="ms-2 item" data-target="#customCarousel1" data-slide-to="1"></button>
 
-   
-    <input id="user-input" class="form-control search-field search-keyword" type="text" placeholder="Chercher" aria-label="Search">
-    <button class="btn btn-secondary btn-apply" > <i id="search-icon" class="fas fa-search" aria-hidden="true"></i></button>
-</div>
-</div>
-</div>
+        <button class="ms-2 item" data-target="#customCarousel1" data-slide-to="2"></button>
+      </div>
+     
 
-</form>
-
-</div>
-
-<!--
-<div class="container mt-5">
-    <div class="card ">
-
-        <table class="table align-middle mb-0 bg-white">
-            <thead class="bg-light">
-
-                <tr>
-                    <th>Titre</th>
-                    <th>Type</th>
-                    <th>Lieu</th>
-                    <th>Date d'ajout</th>
-                    <th>Action</th>
-                </tr>
-
-
-            </thead>
-            <tbody>
-                {% for job in jobs %}
-                <tr>
-
-                    <td>
-                        <p class="fw-normal mb-1">{{ job.title }}</p>
-
-                    </td>
-
-                    <td>
-                        <span class="badge badge-success rounded-pill d-inline">{{ job.get_job_type_display }}</span>
-                    </td>
-
-                    <td>
-                        <p class="fw-normal mb-1"> {{ job.location }}</p>
-
-                    </td>
-
-                    <td>
-                        <p class="text-muted mb-0""> Ajoutée il ya {{ job.created_at|timesince }}</p>
-                    </td>
-
-
-                    <td>
-                        <a type=" button" class="btn btn-primary" href="{% url 'apply_for_job' job.id %}"> Postuler </a>
-
-                        
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-
-
-
-                    <div class="alert alert-danger mt-1">
-
-                        <p><strong>
-
-
-                                <i class="fa-solid fa-circle-exclamation"></i> Aucune offre disponible pour le
-                                moment.</strong></p>
-
-                    </div>
-
-
-                </tr>
-
-
-
-                {% endfor %}
-
-            </tbody>
-        </table>
+ 
 
     </div>
-   
 
+  </section>
 </div>
+<!--
+<div id="jobs-banner-img" class="banner d-flex flex-column justify-content-center align-items-center text-center divbg">
+
+    </div>
 -->
 
 
+{% if not request.user.is_superuser and not request.user.recruiter_profile %}
+
+    <div class="mt-5 text-center">
+        <h1 id="scroll">Nos Offres</h1>
+        <h4 class="positions">
+
+            {{jobs|length}} Postes vacants
+
+        </h4>
+
+
+    </div>
+
+    <div class="container">
+
+        <form class="search-form">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group">
+
+
+                        <input id="user-input" class="form-control search-field search-keyword" type="text"
+                            placeholder="Chercher" aria-label="Search">
+                        <button class="btn btn-secondary btn-apply"> <i id="search-icon" class="fas fa-search"
+                                aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
 
 
 <div id="replaceable-content">
     {% include 'jobs_list.html' %}
 </div>
+
+{% endif %}
+
+
+<section class="feature_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>Fonctionnalités de Notre Plateforme</h2>
+        <p>Découvrez les principales fonctionnalités de notre plateforme de recrutement, conçues pour optimiser vos processus de recrutement.</p>
+      </div>
+      <div class="row">
+        <!-- Parsing automatique des informations de CV -->
+        <div class="col-sm-6 col-lg-3">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% static 'img/pdf.png' %}" alt="Parsing CV">
+            </div>
+            <div class="detail-box">
+              <h5>Parsing des CV</h5>
+              <p>Extraction automatique des informations (Nom, Prénom, Compétances,...) des CV à partir des fichiers PDF, facilitant ainsi la gestion des candidatures. </p>
+              <a href="">
+                <span>En Savoir Plus</span>
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Prédiction du domaine/category du CV -->
+        <div class="col-sm-6 col-lg-3">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% static 'img/category.png' %}" alt="Prédiction de Domaine">
+            </div>
+            <div class="detail-box">
+              <h5>Prédiction du Domaine</h5>
+              <p>Prédiction automatique du domaine ou de la catégorie du CV pour une meilleure classification des candidatures. (Data science, Operation Manager, ...)</p>
+              <a href="">
+                <span>En Savoir Plus</span>
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Pourcentage de matching d'une candidature avec une offre d'emploi -->
+        <div class="col-sm-6 col-lg-3">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% static 'img/pourcent.png' %}" alt="Matching Candidature">
+            </div>
+            <div class="detail-box">
+              <h5>Pourcentage de Matching</h5>
+              <p>Évaluation du pourcentage de correspondance entre une candidature et une offre d'emploi pour un tri plus efficace.</p>
+              <a href="">
+                <span>En Savoir Plus</span>
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Recommandation de candidats selon les critères des recruteurs -->
+        <div class="col-sm-6 col-lg-3">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% static 'img/ai.png' %}" alt="Recommandation de Candidats">
+            </div>
+            <div class="detail-box">
+              <h5>Recommandation de Candidats</h5>
+              <p>Recommandations de candidats basées sur les critères définis par les recruteurs pour une sélection plus ciblée.</p>
+              <a href="">
+                <span>En Savoir Plus</span>
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+    </div>
+  </section>
+  
 
 
 

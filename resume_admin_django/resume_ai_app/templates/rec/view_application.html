@@ -8,10 +8,10 @@
         <div class="card-body">
         <h3 class="card-title mt-3">Candidature N°  {{ application.id }} </h3>
             <hr>
-            <p><b>Candidat:</b> {{ application.candidate.user.username }}</p>
+            <p><b>Candidat:</b> <a class="text-info" href="{% url 'view_profile' application.candidate.user.id %}">{{ application.candidate.user.username }}</a></p>
             <p><b>Poste:</b> {{ application.job.title }}</p>
             <p><b>Date de candidature:</b> {{ application.applied_at }}</p>
-            <p><b>Recruteur:</b> {{ application.job.recruiter.user.first_name }} {{ application.job.recruiter.user.last_name }}</p>    
+            <p><b>Recruteur:</b> <a class="text-info" href="{% url 'view_profile' application.job.recruiter.user.id %}"> {{ application.job.recruiter.user.first_name }} {{ application.job.recruiter.user.last_name }} </a></p>    
             <p><b>Statut:</b> {{ application.get_status_display }}</p>
             <p><b>Commentaire du recruteur:</b> {{ application.recruiter_comment }}</p>
         </div>

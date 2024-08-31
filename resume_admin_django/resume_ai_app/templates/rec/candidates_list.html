@@ -1,3 +1,7 @@
+{% extends 'rec/detail_job.html' %}
+
+{% block content_candidates %}
+{% load static %}
 
 <div class="card mt-5">
     <div class="container">
@@ -6,6 +10,7 @@
     <hr>
 
     <span  class="text-muted"> Nombre Totale de candidatures : {{ nb_candidature}} </span>
+
 
 
     {% if applications %}
@@ -27,12 +32,12 @@
             {% for item in applications %}
             <tr>
                 <td>{{ item.application.id}}</td>
-                <td>{{ item.application.candidate.user.username }}</td>
+                <td class="text-info"><a href="{% url 'view_profile' item.application.candidate.user.id %}">{{ item.application.candidate.user.username }}</a></td>
                 <td>{{ item.application.job.title }}</td>
                 <td>{{ item.application.applied_at }}</td>
                 <td> <span class="badge rounded-pill badge-dark"> {% widthratio item.Similarity 1 100 %} %</span> </td>
                 <td>
-
+    
                     {% if  item.application.status == 'in progress' %} <span class="badge badge-warning rounded-pill d-inline">{{ item.application.get_status_display }}</span>
                     {% elif  item.application.status == 'accepted' %} <span class="badge badge-success rounded-pill d-inline">{{ item.application.get_status_display }}</span>
                     {% elif  item.application.status == 'rejected' %} <span class="badge badge-danger rounded-pill d-inline">{{ item.application.get_status_display }}</span>
@@ -47,13 +52,16 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
-
-{% elif applications is not None %}
-    <div class="alert alert-warning mt-3" role="alert">
-        Aucun candidat n'a encore postulé pour ce poste .
     </div>
-{% endif %}
+    
+    {% elif applications is not None %}
+    <div class="alert alert-warning mt-3" role="alert">
+        Aucune candidature trouvée .
+    </div>
+    {% endif %}
+
 
 </div>
 </div>
+
+{% endblock%}

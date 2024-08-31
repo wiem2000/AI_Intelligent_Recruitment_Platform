@@ -26,6 +26,12 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'home'  %}">Acceuil</a>  
         </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'dashboard'  %}">Tableau de bord</a>  
+        </li>
+        {% endif %}
+        
         <li class="nav-item">
           <a class="nav-link" href="#">A propos</a>
         </li>
@@ -75,7 +81,7 @@
                     </li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
-                      <a href="{% url 'update_profile'  %}" class="dropdown-item"><i class="fa-regular fa-user"></i> Profile</a>
+                      <a href="{% url 'view_profile' request.user.id %}" class="dropdown-item"><i class="fa-regular fa-user"></i>Profile</a>
                     </li>
 
                     <li>
